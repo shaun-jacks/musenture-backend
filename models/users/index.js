@@ -26,7 +26,10 @@ const UserSchema = new Schema(
     avatar: {
       type: String,
       default: ""
-    }
+    },
+    // Will be strings of user ids
+    following: [String],
+    followers: [String]
   },
   {
     timestamps: true
