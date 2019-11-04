@@ -1,0 +1,28 @@
+{
+  "name": "musenture-backend",
+  "version": "0.1.0",
+  "description": "Backend for Musenture Application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shaun-jacks/musenture-backend.git"
+  },
+  "author": "Shaun Jackson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shaun-jacks/musenture-backend/issues"
+  },
+  "homepage": "https://github.com/shaun-jacks/musenture-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.7.7",
+    "passport": "^0.4.0"
+  }
+}
