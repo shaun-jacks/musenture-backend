@@ -2,19 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../../models/users");
 const _ = require("lodash");
-
-// Update user
-router.put("/:id", async (req, res) => {
-  const { id } = req.params;
-  const { bio, instrument, skill } = req.body;
-  try {
-    let result = await User.updateOne({ _id: id, bio, instrument, skill });
-    console.log(result);
-    return res.status(200).json({ msg: "Successfully updated user." });
-  } catch (error) {
-    return res.status(400).json({ error });
-  }
-});
+const authenticate = require("../../middleware/auth");
 
 // Get user
 router.get("/:id", async (req, res) => {
@@ -53,14 +41,31 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Follow a user
-router.post("/follow/", async (req, res) => {
-  const { toId, fromId } = req.body;
+/* Protected Routes */
+
+// Update user
+router.put("/", authenticate, async (req, res) => {
+  const { id } = req.user;
+  const { bio, instrument, skill } = req.body;
   try {
+    let result = await User.updateOne({ _id: id, bio, instrument, skill });
+    console.log(result);
+    return res.status(200).json({ msg: "Successfully updated user." });
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+});
+
+// Follow a user
+router.post("/follow/", authenticate, async (req, res) => {
+  const { toId } = req.body;
+  const { id: fromId } = req.user;
+  try {
+    // Add user to followers of followed user
     let userToFollow = await User.findOne({ _id: toId }).exec();
     userToFollow.followers.push(fromId);
     await userToFollow.save();
-
+    // Add followed user to user's followers
     let userWhoFollowed = await User.findOne({ _id: fromId }).exec();
     userWhoFollowed.following.push(toId);
     await userWhoFollowed.save();
@@ -73,15 +78,19 @@ router.post("/follow/", async (req, res) => {
 });
 
 // Unfollow a user
-router.post("/unfollow/", async (req, res) => {
-  const { toId, fromId } = req.body;
+router.post("/unfollow/", authenticate, async (req, res) => {
+  const { toId } = req.body;
+  const { id: fromId } = req.user;
+
   try {
+    // Take user out of unfollowed user's followers
     let userToUnfollow = await User.findOne({ _id: toId }).exec();
     userToUnfollow.followers = userToUnfollow.followers.filter(
       follower => follower !== fromId
     );
     await userToUnfollow.save();
 
+    // Take unfollowed user out of user's following
     let userWhoUnfollowed = await User.findOne({ _id: fromId }).exec();
     userWhoUnfollowed.following = userWhoUnfollowed.following.filter(
       follower => {
@@ -89,6 +98,7 @@ router.post("/unfollow/", async (req, res) => {
       }
     );
     await userWhoUnfollowed.save();
+
     return res.status(200).json({ msg: "Unfollow Success." });
   } catch (error) {
     console.log(error);
