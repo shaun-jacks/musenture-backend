@@ -22,6 +22,10 @@ const UserSchema = new Schema(
     skill: {
       type: String,
       default: ""
+    },
+    avatar: {
+      type: String,
+      default: ""
     }
   },
   {
