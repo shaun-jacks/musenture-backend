@@ -17,10 +17,7 @@ const JamSchema = new Schema(
       type: String,
       default: ""
     },
-    genres: {
-      type: String,
-      default: ""
-    },
+    genres: [String],
     description: {
       type: String,
       default: ""
