@@ -16,10 +16,18 @@ router.get("/", async (req, res) => {
 // Get jam by id
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
+  console.log("Jam made to id: ", id);
   let jam = await Jam.findOne({ id }).exec();
-  if (_.isEmpty(jam)) {
-    return res.status(400).json({ error: "Jam not found" });
-  }
+  console.log("GET Success!");
+  return res.status(200).json(jam);
+});
+
+// Get jam by user id
+router.get("/user/:userId", async (req, res) => {
+  const { userId } = req.params;
+  console.log("GET Jam by user id: ", userId);
+  let jam = await Jam.findOne({ userId }).exec();
+  console.log("GET Success!", jam);
   return res.status(200).json(jam);
 });
 
