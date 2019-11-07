@@ -1,17 +1,18 @@
 const passport = require("passport");
-const FacebookStrategy = require("passport-facebook").Strategy;
+const FacebookTokenStrategy = require("passport-facebook-token");
 const User = require("../../models/users");
 const _ = require("lodash");
 
 passport.use(
-  new FacebookStrategy(
+  "facebookToken",
+  new FacebookTokenStrategy(
     {
       clientID: process.env.facebookClientId,
       clientSecret: process.env.facebookClientSecret,
-      callbackURL: process.env.facebookCallbackUrl,
+      passReqToCallback: true,
       profileFields: ["id", "displayName", "photos", "email"]
     },
-    async function(accessToken, refreshToken, profile, done) {
+    async function(req, accessToken, refreshToken, profile, done) {
       console.log("FACEBOOK OAUTH CALLED");
       console.log(profile);
       const avatar = profile.photos ? profile.photos[0].value : "";
@@ -36,12 +37,6 @@ passport.use(
         console.log(user);
         return done(null, user);
       }
-      // if user signed up with another provider, return error
-      // if (user.google.id || user.password) {
-      //   return (
-      //     null, false, { message: "Email registered with another provider" }
-      //   );
-      // }
 
       // pass user to req object
       return done(null, user);

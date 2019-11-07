@@ -2,21 +2,15 @@ const express = require("express");
 const router = express.Router(); // /users/auth/facebook
 const passport = require("passport");
 
-router.get(
+router.post(
   "/",
-  passport.authenticate("facebook", { scope: ["email"], session: false })
-);
-
-router.get(
-  "/callback",
-  passport.authenticate("facebook", {
-    session: false,
-    failureRedirect: "/login",
-    sucessRedirect: "/"
-  }),
+  passport.authenticate("facebookToken", { scope: ["email"], session: false }),
   async (req, res) => {
     const token = await req.user.generateAuthToken();
-    res.send(token);
+    res
+      .header("x-auth-token", token)
+      .status(200)
+      .json({ success: true });
   }
 );
 

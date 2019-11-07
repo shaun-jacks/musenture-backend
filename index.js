@@ -1,31 +1,29 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
 const mongoConnect = require("./models");
 const passport = require("passport");
 const helmet = require("helmet");
-const User = require("./models/users");
-const Jam = require("./models/jams");
+const cors = require("cors");
+const whitelist = ["https://localhost:3001", "http://localhost:3001"];
+
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  exposedHeaders: ["x-auth-token"]
+};
+app.use(cors(corsOptions));
 
 const usersRoutes = require("./routes/users");
 const jamsRoutes = require("./routes/jams");
 
 require("dotenv").config();
 require("./config/auth/facebook");
-
-// const whitelist = ["http://localhost:3000"];
-// const corsOptions = {
-//   origin: function(origin, callback) {
-//     if (whitelist.indexOf(origin) !== -1) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   exposedHeaders: ["x-auth-token"]
-// };
-// app.use(cors(corsOptions));
 
 // Initialize db connection
 const connection = mongoConnect();

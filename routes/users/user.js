@@ -5,8 +5,9 @@ const _ = require("lodash");
 const authenticate = require("../../middleware/auth");
 
 // Get user
-router.get("/:id", async (req, res) => {
-  const { id } = req.params;
+router.get("/", async (req, res) => {
+  const { id } = req.query;
+  console.log("GET REQUEST with id");
   try {
     let user = await User.findOne({ _id: id });
     console.log(user);
@@ -17,7 +18,8 @@ router.get("/:id", async (req, res) => {
       displayName: user.displayName,
       instrument: user.instrument
     };
-    return res.status(200).json(sanitizedUser);
+    console.log("GET Success");
+    return res.status(200).json({ user: sanitizedUser });
   } catch (error) {
     return res.status(400).json({ error });
   }
@@ -41,7 +43,33 @@ router.get("/", async (req, res) => {
   }
 });
 
+//**********************//
 /* Protected Routes */
+//**********************//
+
+// Get Me
+router.get("/me", authenticate, async (req, res) => {
+  const { id } = req.user;
+  console.log("GET REQUEST to /me");
+  try {
+    let user = await User.findOne({ _id: id });
+    console.log(user);
+    if (_.isEmpty(user)) {
+      return res.status(400).json({ error: "User not found." });
+    }
+    const sanitizedUser = {
+      displayName: user.displayName,
+      instrument: user.instrument,
+      bio: user.bio,
+      skill: user.skill,
+      avatar: user.avatar
+    };
+    console.log("GET Success");
+    return res.status(200).json({ user: sanitizedUser });
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+});
 
 // Update user
 router.put("/", authenticate, async (req, res) => {
@@ -57,7 +85,7 @@ router.put("/", authenticate, async (req, res) => {
 });
 
 // Follow a user
-router.post("/follow/", authenticate, async (req, res) => {
+router.post("/follow", authenticate, async (req, res) => {
   const { toId } = req.body;
   const { id: fromId } = req.user;
   try {
@@ -78,7 +106,7 @@ router.post("/follow/", authenticate, async (req, res) => {
 });
 
 // Unfollow a user
-router.post("/unfollow/", authenticate, async (req, res) => {
+router.post("/unfollow", authenticate, async (req, res) => {
   const { toId } = req.body;
   const { id: fromId } = req.user;
 
