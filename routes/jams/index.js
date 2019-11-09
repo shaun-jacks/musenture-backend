@@ -26,7 +26,7 @@ router.get("/:id", async (req, res) => {
 router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
   console.log("GET Jam by user id: ", userId);
-  let jam = await Jam.find({ userId }).exec();
+  let jam = await Jam.find({ "user.userId": userId }).exec();
   console.log("GET Success!", jam);
   return res.status(200).json(jam);
 });
@@ -35,11 +35,20 @@ router.get("/user/:userId", async (req, res) => {
 
 // Create a jam
 router.post("/", authenticate, async (req, res) => {
-  const { id: userId } = req.user;
-  const { location, genres, description, title, dateOfJam } = req.body;
+  const { id: userId, displayName } = req.user;
+  const {
+    location,
+    genres,
+    description,
+    title,
+    dateOfJam,
+    userAvatar
+  } = req.body;
   try {
     jam = new Jam({
-      userId,
+      "user.userId": userId,
+      "user.displayName": displayName,
+      "user.avatar": userAvatar,
       title,
       description,
       genres,

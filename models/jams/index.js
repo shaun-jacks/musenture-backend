@@ -3,11 +3,21 @@ const Schema = mongoose.Schema;
 
 const JamSchema = new Schema(
   {
-    userId: {
-      type: String,
-      default: "",
-      index: true,
-      required: [true, "Must have user id"]
+    user: {
+      userId: {
+        type: String,
+        default: "",
+        index: true,
+        required: [true, "Must have user id"]
+      },
+      displayName: {
+        type: String,
+        default: ""
+      },
+      avatar: {
+        type: String,
+        default: ""
+      }
     },
     dateOfJam: {
       type: Date
