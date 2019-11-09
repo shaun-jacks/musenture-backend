@@ -58,6 +58,7 @@ router.get("/me", authenticate, async (req, res) => {
       return res.status(400).json({ error: "User not found." });
     }
     const sanitizedUser = {
+      id: user._id,
       displayName: user.displayName,
       instrument: user.instrument,
       bio: user.bio,

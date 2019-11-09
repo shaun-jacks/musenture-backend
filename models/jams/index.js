@@ -9,6 +9,9 @@ const JamSchema = new Schema(
       index: true,
       required: [true, "Must have user id"]
     },
+    dateOfJam: {
+      type: Date
+    },
     title: {
       type: String,
       default: ""

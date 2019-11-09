@@ -22,11 +22,11 @@ router.get("/:id", async (req, res) => {
   return res.status(200).json(jam);
 });
 
-// Get jam by user id
+// Get jams by user id
 router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
   console.log("GET Jam by user id: ", userId);
-  let jam = await Jam.findOne({ userId }).exec();
+  let jam = await Jam.find({ userId }).exec();
   console.log("GET Success!", jam);
   return res.status(200).json(jam);
 });
@@ -36,14 +36,15 @@ router.get("/user/:userId", async (req, res) => {
 // Create a jam
 router.post("/", authenticate, async (req, res) => {
   const { id: userId } = req.user;
-  const { location, genres, description, title } = req.body;
+  const { location, genres, description, title, dateOfJam } = req.body;
   try {
     jam = new Jam({
       userId,
       title,
       description,
       genres,
-      location
+      location,
+      dateOfJam
     });
     await jam.save();
     return res.status(200).json(jam);
