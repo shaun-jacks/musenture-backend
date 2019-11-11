@@ -17,7 +17,18 @@ const UserSchema = new Schema(
     },
     instrument: {
       type: String,
-      default: ""
+      enum: [
+        "guitar",
+        "piano",
+        "voice",
+        "drums",
+        "dj",
+        "percussion",
+        "bass",
+        "violin",
+        "horns",
+        "winds"
+      ]
     },
     skill: {
       type: String,

@@ -34,7 +34,14 @@ const JamSchema = new Schema(
     description: {
       type: String,
       default: ""
-    }
+    },
+    usersGoing: [
+      {
+        userId: { type: String, default: "" },
+        displayName: { type: String, default: "" },
+        instrument: { type: String, default: "" }
+      }
+    ]
   },
   {
     timestamps: true

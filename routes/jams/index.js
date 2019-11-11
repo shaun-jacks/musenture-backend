@@ -53,7 +53,8 @@ router.post("/", authenticate, async (req, res) => {
       description,
       genres,
       location,
-      dateOfJam
+      dateOfJam,
+      usersGoing: [{ userId, displayName }]
     });
     await jam.save();
     return res.status(200).json(jam);
