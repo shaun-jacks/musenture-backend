@@ -81,4 +81,24 @@ router.put("/:id", authenticate, async (req, res) => {
   }
 });
 
+// Join a jam
+router.post("/join/:id", authenticate, async (req, res) => {
+  const { id } = req.params;
+  const { id: userId, displayName } = req.user;
+  console.log(`POST to jams/join/${id}`);
+  try {
+    let jam = await Jam.updateOne(
+      {
+        _id: id
+      },
+      { $push: { usersGoing: { userId, displayName } } }
+    );
+    console.log(`POST SUCCESS ${jam}`);
+    return res.status(200).json({ userId, displayName });
+  } catch (error) {
+    console.log(`POST ERROR ${error}`);
+    return res.status(400).json({ error });
+  }
+});
+
 module.exports = router;
