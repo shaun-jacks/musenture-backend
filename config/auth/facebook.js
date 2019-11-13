@@ -31,11 +31,18 @@ passport.use(
         user = new User({
           displayName,
           email,
-          avatar
+          avatar,
+          "providers.facebook": true
         });
         user = await user.save();
         console.log(user);
         return done(null, user);
+      }
+      // if user signed up with another provider, return error
+      if (user.google || user.password) {
+        return (
+          null, false, { message: "Email registered with another provider" }
+        );
       }
 
       // pass user to req object

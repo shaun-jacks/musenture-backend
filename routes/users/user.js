@@ -63,7 +63,9 @@ router.get("/me", authenticate, async (req, res) => {
       instrument: user.instrument,
       bio: user.bio,
       skill: user.skill,
-      avatar: user.avatar
+      avatar: user.avatar,
+      followers: user.followers,
+      following: user.following
     };
     console.log("GET Success");
     return res.status(200).json({ user: sanitizedUser });
@@ -91,13 +93,15 @@ router.post("/follow", authenticate, async (req, res) => {
   const { id: fromId } = req.user;
   try {
     // Add user to followers of followed user
-    let userToFollow = await User.findOne({ _id: toId }).exec();
-    userToFollow.followers.push(fromId);
-    await userToFollow.save();
+    await User.findOneAndUpdate(
+      { _id: toId },
+      { $push: { followers: fromId } }
+    ).exec();
     // Add followed user to user's followers
-    let userWhoFollowed = await User.findOne({ _id: fromId }).exec();
-    userWhoFollowed.following.push(toId);
-    await userWhoFollowed.save();
+    await User.findOneAndUpdate(
+      { _id: fromId },
+      { $push: { following: toId } }
+    ).exec();
 
     return res.status(200).json({ msg: "Follow Success." });
   } catch (error) {
@@ -113,20 +117,16 @@ router.post("/unfollow", authenticate, async (req, res) => {
 
   try {
     // Take user out of unfollowed user's followers
-    let userToUnfollow = await User.findOne({ _id: toId }).exec();
-    userToUnfollow.followers = userToUnfollow.followers.filter(
-      follower => follower !== fromId
-    );
-    await userToUnfollow.save();
+    await User.findOneAndUpdate(
+      { _id: toId },
+      { $pull: { followers: fromId } }
+    ).exec();
 
     // Take unfollowed user out of user's following
-    let userWhoUnfollowed = await User.findOne({ _id: fromId }).exec();
-    userWhoUnfollowed.following = userWhoUnfollowed.following.filter(
-      follower => {
-        return follower !== toId;
-      }
-    );
-    await userWhoUnfollowed.save();
+    await User.findOneAndUpdate(
+      { _id: fromId },
+      { $pull: { following: toId } }
+    ).exec();
 
     return res.status(200).json({ msg: "Unfollow Success." });
   } catch (error) {

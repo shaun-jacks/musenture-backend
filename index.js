@@ -17,7 +17,7 @@ const corsOptions = {
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   exposedHeaders: ["x-auth-token"]
 };
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 const usersRoutes = require("./routes/users");
 const jamsRoutes = require("./routes/jams");

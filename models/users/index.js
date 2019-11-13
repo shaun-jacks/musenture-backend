@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Schema = mongoose.Schema;
 
@@ -9,6 +10,13 @@ const UserSchema = new Schema(
       unique: true,
       index: true,
       required: [true, "Must have email"]
+    },
+    providers: {
+      facebook: { type: Boolean, default: false },
+      google: { type: Boolean, default: false }
+    },
+    hashedPassword: {
+      type: String
     },
     displayName: { type: String, default: "" },
     bio: {
@@ -59,6 +67,22 @@ UserSchema.methods.generateAuthToken = async function() {
     }
   );
   return token;
+};
+
+UserSchema.methods.generateHashPassword = async function(password) {
+  return new Promise((resolve, reject) => {
+    const SALT = 12;
+    // generate a salt
+    bcrypt.genSalt(SALT, (err, salt) => {
+      if (err) return reject(err);
+
+      // hash the password along with our new salt
+      bcrypt.hash(password, salt, (err, hash) => {
+        if (err) return reject(err);
+        return resolve(hash);
+      });
+    });
+  });
 };
 
 module.exports = mongoose.model("User", UserSchema);

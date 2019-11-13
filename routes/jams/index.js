@@ -101,4 +101,24 @@ router.post("/join/:id", authenticate, async (req, res) => {
   }
 });
 
+// Unjoin a jam
+router.post("/unjoin/:id", authenticate, async (req, res) => {
+  const { id } = req.params;
+  const { id: userId, displayName } = req.user;
+  console.log(`POST to jams/unjoin/${id}`);
+  try {
+    let jam = await Jam.updateOne(
+      {
+        _id: id
+      },
+      { $pull: { usersGoing: { userId } } }
+    );
+    console.log(`POST SUCCESS ${jam}`);
+    return res.status(200).json({ userId, displayName });
+  } catch (error) {
+    console.log(`POST ERROR ${error}`);
+    return res.status(400).json({ error });
+  }
+});
+
 module.exports = router;
