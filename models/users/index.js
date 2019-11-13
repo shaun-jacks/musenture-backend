@@ -85,4 +85,16 @@ UserSchema.methods.generateHashPassword = async function(password) {
   });
 };
 
+UserSchema.methods.validatePassword = async function(candidatePassword) {
+  try {
+    const isMatch = await bcrypt.compare(
+      candidatePassword,
+      this.hashedPassword
+    );
+    return isMatch;
+  } catch (err) {
+    return err;
+  }
+};
+
 module.exports = mongoose.model("User", UserSchema);
