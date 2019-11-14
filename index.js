@@ -4,24 +4,26 @@ const mongoConnect = require("./models");
 const passport = require("passport");
 const helmet = require("helmet");
 const cors = require("cors");
-// const whitelist = [
-//   "https://localhost:3001",
-//   "http://localhost:3001",
-//   "http://localhost"
-// ];
+const whitelist = [
+  "https://localhost:3001",
+  "http://localhost:3001",
+  "http://localhost",
+  "https://localhost",
+  "https://localhost:3000"
+];
 
-// const corsOptions = {
-//   origin: function(origin, callback) {
-//     if (whitelist.indexOf(origin) !== -1) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   exposedHeaders: ["x-auth-token"]
-// };
-// app.use(cors(corsOptions));
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  exposedHeaders: ["x-auth-token"]
+};
+app.use(cors(corsOptions));
 
 const usersRoutes = require("./routes/users");
 const jamsRoutes = require("./routes/jams");
