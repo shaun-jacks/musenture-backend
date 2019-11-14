@@ -1,4 +1,4 @@
-const Joi = require("@hapi/Joi");
+const Joi = require("@hapi/joi");
 
 // Create login form validation
 const loginSchema = Joi.object().keys({
