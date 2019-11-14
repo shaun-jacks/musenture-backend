@@ -40,6 +40,9 @@ router.post("/", async (req, res) => {
     // Hash Password
     const hashedPassword = await user.generateHashPassword(password);
     user.hashedPassword = hashedPassword;
+    // Create random avatar photos
+    user.avatar = "https://picsum.photos/50";
+    user.avatarLarge = "https://picsum.photos/300";
     // Save user to database
     try {
       user = await user.save();

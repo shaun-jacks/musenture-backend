@@ -46,6 +46,10 @@ const UserSchema = new Schema(
       type: String,
       default: ""
     },
+    avatarLarge: {
+      type: String,
+      default: ""
+    },
     // Will be strings of user ids
     following: [String],
     followers: [String]

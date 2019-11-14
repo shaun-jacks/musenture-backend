@@ -10,6 +10,7 @@ router.get("/", async (req, res) => {
   if (_.isEmpty(jams)) {
     return res.status(400).json({ error: "Jams not found" });
   }
+  console.log(jams);
   return res.status(200).json(jams);
 });
 
@@ -27,6 +28,7 @@ router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
   console.log("GET Jam by user id: ", userId);
   let jam = await Jam.find({ "user.userId": userId }).exec();
+  console.log("JAM: ", jam);
   console.log("GET Success!", jam);
   return res.status(200).json(jam);
 });

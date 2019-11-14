@@ -4,45 +4,6 @@ const User = require("../../models/users");
 const _ = require("lodash");
 const authenticate = require("../../middleware/auth");
 
-// Get user
-router.get("/", async (req, res) => {
-  const { id } = req.query;
-  console.log("GET REQUEST with id");
-  try {
-    let user = await User.findOne({ _id: id });
-    console.log(user);
-    if (_.isEmpty(user)) {
-      return res.status(400).json({ error: "User not found." });
-    }
-    const sanitizedUser = {
-      displayName: user.displayName,
-      instrument: user.instrument
-    };
-    console.log("GET Success");
-    return res.status(200).json({ user: sanitizedUser });
-  } catch (error) {
-    return res.status(400).json({ error });
-  }
-});
-
-// Get users
-router.get("/", async (req, res) => {
-  try {
-    let users = await User.find({});
-    console.log(users);
-    if (_.isEmpty(users)) {
-      return res.status(400).json({ error: "Users not found." });
-    }
-    const sanitizedUsers = users.map(user => {
-      return { displayName: user.displayName, instrument: user.instrument };
-    });
-    return res.status(200).json(sanitizedUsers);
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json({ error });
-  }
-});
-
 //**********************//
 /* Protected Routes */
 //**********************//
@@ -64,10 +25,11 @@ router.get("/me", authenticate, async (req, res) => {
       bio: user.bio,
       skill: user.skill,
       avatar: user.avatar,
+      avatarLarge: user.avatarLarge,
       followers: user.followers,
       following: user.following
     };
-    console.log("GET Success");
+    console.log("GET Success", sanitizedUser);
     return res.status(200).json({ user: sanitizedUser });
   } catch (error) {
     return res.status(400).json({ error });
@@ -76,12 +38,24 @@ router.get("/me", authenticate, async (req, res) => {
 
 // Update user
 router.put("/", authenticate, async (req, res) => {
+  console.log("PUT REQUEST CALLED");
   const { id } = req.user;
-  const { bio, instrument, skill } = req.body;
+  const { displayName, bio, instrument, skill } = req.body;
   try {
-    let result = await User.updateOne({ _id: id, bio, instrument, skill });
-    console.log(result);
-    return res.status(200).json({ msg: "Successfully updated user." });
+    let res = await User.updateOne(
+      {
+        _id: id
+      },
+      {
+        displayName,
+        bio,
+        instrument,
+        skill
+      }
+    );
+    console.log(res);
+
+    return res.status(200).json(res);
   } catch (error) {
     return res.status(400).json({ error });
   }
@@ -131,6 +105,61 @@ router.post("/unfollow", authenticate, async (req, res) => {
     return res.status(200).json({ msg: "Unfollow Success." });
   } catch (error) {
     console.log(error);
+    return res.status(400).json({ error });
+  }
+});
+
+//**********************//
+/* Unprotected Routes */
+//**********************//
+
+// Get users
+router.get("/", async (req, res) => {
+  try {
+    let users = await User.find({});
+    console.log(users);
+    if (_.isEmpty(users)) {
+      return res.status(400).json({ error: "Users not found." });
+    }
+    const sanitizedUsers = users.map(user => {
+      return {
+        _id: user._id,
+        displayName: user.displayName,
+        avatar: user.avatar,
+        avatarLarge: user.avatarLarge,
+        instrument: user.instrument
+      };
+    });
+    return res.status(200).json({ users: sanitizedUsers });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ error });
+  }
+});
+
+// Get user
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log("GET REQUEST with id");
+  try {
+    let user = await User.findOne({ _id: id });
+    console.log(user);
+    if (_.isEmpty(user)) {
+      return res.status(400).json({ error: "User not found." });
+    }
+    const sanitizedUser = {
+      _id: user._id,
+      displayName: user.displayName,
+      avatar: user.avatar,
+      avatarLarge: user.avatarLarge,
+      instrument: user.instrument,
+      followers: user.followers,
+      following: user.following
+    };
+    console.log(sanitizedUser);
+    console.log("GET Success by user id!");
+    return res.status(200).json({ user: sanitizedUser });
+  } catch (error) {
     return res.status(400).json({ error });
   }
 });
