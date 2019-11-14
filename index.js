@@ -9,7 +9,8 @@ const whitelist = [
   "http://localhost:3001",
   "http://localhost",
   "https://localhost",
-  "https://localhost:3000"
+  "https://localhost:3000",
+  "https://musenture-fcc94.firebaseapp.com"
 ];
 
 const corsOptions = {
