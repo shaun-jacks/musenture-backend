@@ -57,6 +57,7 @@ router.put("/", authenticate, async (req, res) => {
 
     return res.status(200).json(res);
   } catch (error) {
+    console.log(error);
     return res.status(400).json({ error });
   }
 });
