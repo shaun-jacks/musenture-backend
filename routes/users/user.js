@@ -42,7 +42,7 @@ router.put("/", authenticate, async (req, res) => {
   const { id } = req.user;
   const { displayName, bio, instrument, skill } = req.body;
   try {
-    let res = await User.updateOne(
+    let result = await User.updateOne(
       {
         _id: id
       },
@@ -53,9 +53,9 @@ router.put("/", authenticate, async (req, res) => {
         skill
       }
     );
-    console.log(res);
+    console.log(result);
 
-    return res.status(200).json(res);
+    return res.status(200).json(result);
   } catch (error) {
     console.log(error);
     return res.status(400).json({ error });
