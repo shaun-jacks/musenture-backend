@@ -4,7 +4,11 @@ const mongoConnect = require("./models");
 const passport = require("passport");
 const helmet = require("helmet");
 const cors = require("cors");
-const whitelist = ["https://localhost:3001", "http://localhost:3001"];
+const whitelist = [
+  "https://localhost:3001",
+  "http://localhost:3001",
+  "http://localhost"
+];
 
 const corsOptions = {
   origin: function(origin, callback) {
