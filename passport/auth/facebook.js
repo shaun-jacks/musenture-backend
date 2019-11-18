@@ -6,8 +6,6 @@ const config = require("config")[process.env.NODE_ENV || "development"];
 
 const facebook_client_id = config.get("passport.facebook_client_id");
 const facebook_client_secret = config.get("passport.facebook_client_secret");
-console.log(facebook_client_id);
-console.log(process.env.NODE_ENV);
 
 passport.use(
   "facebookToken",
