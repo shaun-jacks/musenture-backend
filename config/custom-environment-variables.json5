@@ -1,0 +1,43 @@
+{
+  "test": {
+    "db": {
+      // MONGO_URL_TEST=<test string>
+      // export MONGO_URL_TEST
+      "mongo_url": "MONGO_URL_TEST"
+    },
+    "token": {
+      "secret": "JWT_PRIVATE_KEY",
+    },
+    "passport": {
+      "facebook_callback_url" : "FACEBOOK_CALLBACK_URL",
+      "facebook_client_id": "FACEBOOK_CLIENT_ID",
+      "facebook_client_secret": "FACEBOOK_CLIENT_SECRET",
+    },
+  },
+  "development": {
+    "db": {
+      "mongo_url": "MONGO_URL"
+    },
+    "token": {
+      "secret": "JWT_PRIVATE_KEY",
+    },
+    "passport": {
+      "facebook_callback_url" : "FACEBOOK_CALLBACK_URL",
+      "facebook_client_id": "FACEBOOK_CLIENT_ID",
+      "facebook_client_secret": "FACEBOOK_CLIENT_SECRET",
+    },
+  }, 
+  "production": {
+    "db": {
+      "mongo_url": "MONGO_URL"
+    },
+    "token": {
+      "secret": "JWT_PRIVATE_KEY",
+    },
+    "passport": {
+      "facebook_callback_url" : "FACEBOOK_CALLBACK_URL",
+      "facebook_client_id": "FACEBOOK_CLIENT_ID",
+      "facebook_client_secret": "FACEBOOK_CLIENT_SECRET",
+    },
+  },
+}

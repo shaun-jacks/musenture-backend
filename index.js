@@ -4,13 +4,14 @@ const mongoConnect = require("./models");
 const passport = require("passport");
 const helmet = require("helmet");
 const cors = require("cors");
+const config = require("config")[process.env.NODE_ENV || "development"];
 const whitelist = [
   "https://localhost:3001",
   "http://localhost:3001",
   "http://localhost",
   "https://localhost",
   "https://localhost:3000",
-  "https://musenture-fcc94.firebaseapp.com"
+  config.get("client_uri")
 ];
 
 const corsOptions = {
@@ -29,8 +30,7 @@ app.use(cors(corsOptions));
 const usersRoutes = require("./routes/users");
 const jamsRoutes = require("./routes/jams");
 
-require("dotenv").config();
-require("./config/auth/facebook");
+require("./passport/auth/facebook");
 
 // Initialize db connection
 const connection = mongoConnect();

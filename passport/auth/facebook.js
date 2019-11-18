@@ -2,13 +2,19 @@ const passport = require("passport");
 const FacebookTokenStrategy = require("passport-facebook-token");
 const User = require("../../models/users");
 const _ = require("lodash");
+const config = require("config")[process.env.NODE_ENV || "development"];
+
+const facebook_client_id = config.get("passport.facebook_client_id");
+const facebook_client_secret = config.get("passport.facebook_client_secret");
+console.log(facebook_client_id);
+console.log(process.env.NODE_ENV);
 
 passport.use(
   "facebookToken",
   new FacebookTokenStrategy(
     {
-      clientID: process.env.facebookClientId,
-      clientSecret: process.env.facebookClientSecret,
+      clientID: facebook_client_id,
+      clientSecret: facebook_client_secret,
       passReqToCallback: true,
       profileFields: ["id", "displayName", "photos", "email"]
     },

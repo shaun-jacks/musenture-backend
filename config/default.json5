@@ -1,0 +1,44 @@
+{
+  "test": {
+    "db": {
+      "mongo_url": ""
+    },
+    "token": {
+      "secret": "",
+    },
+    "passport": {
+      "facebook_callback_url" : "",
+      "facebook_client_id": "",
+      "facebook_client_secret": "",
+    },
+    "client_uri": "https://musenture-fcc94.firebaseapp.com",
+  },
+  "development": {
+    "db": {
+      "mongo_url": ""
+    },
+    "token": {
+      "secret": "",
+    },
+    "passport": {
+      "facebook_callback_url" : "",
+      "facebook_client_id": "",
+      "facebook_client_secret": "",
+    },
+    "client_uri": "https://musenture-fcc94.firebaseapp.com",
+  }, 
+  "production": {
+    "db": {
+      "mongo_url": ""
+    },
+    "token": {
+      "secret": "",
+    },
+    "passport": {
+      "facebook_callback_url" : "",
+      "facebook_client_id": "",
+      "facebook_client_secret": "",
+    },
+    "client_uri": "https://musenture-fcc94.firebaseapp.com",
+  },
+}
