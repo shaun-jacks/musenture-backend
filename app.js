@@ -55,6 +55,6 @@ app.get("/", async (req, res) => {
 const PORT = config.get("port");
 
 module.exports = app.listen(
-  PORT,
+  process.env.PORT || PORT || "3000",
   console.log(`Server started on port ${PORT}`)
 );
