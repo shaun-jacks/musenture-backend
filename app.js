@@ -4,6 +4,8 @@ const passport = require("passport");
 const helmet = require("helmet");
 const cors = require("cors");
 const config = require("config")[process.env.NODE_ENV || "development"];
+let { mongoConnect } = require("./models");
+
 const whitelist = [
   "https://localhost:3001",
   "http://localhost:3001",
@@ -24,7 +26,10 @@ const corsOptions = {
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   exposedHeaders: ["x-auth-token"]
 };
-app.use(cors(corsOptions));
+//==================================//
+// Disable cors when running tests //
+//==================================//
+// app.use(cors(corsOptions));
 
 const usersRoutes = require("./routes/users");
 const jamsRoutes = require("./routes/jams");
@@ -47,4 +52,9 @@ app.get("/", async (req, res) => {
   return res.status(200).send("Hello!");
 });
 
-module.exports = app;
+const PORT = config.get("port");
+
+module.exports = app.listen(
+  PORT,
+  console.log(`Server started on port ${PORT}`)
+);
