@@ -12,6 +12,7 @@
       "facebook_client_secret": "",
     },
     "client_uri": "https://musenture-fcc94.firebaseapp.com",
+    "port": "3001",
   },
   "development": {
     "db": {
@@ -26,6 +27,7 @@
       "facebook_client_secret": "",
     },
     "client_uri": "https://musenture-fcc94.firebaseapp.com",
+    "port": "3000",
   }, 
   "production": {
     "db": {
@@ -40,5 +42,6 @@
       "facebook_client_secret": "",
     },
     "client_uri": "https://musenture-fcc94.firebaseapp.com",
+    "port": "3000",
   },
 }

@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const mongoConnect = require("./models");
 const passport = require("passport");
 const helmet = require("helmet");
 const cors = require("cors");
@@ -32,16 +31,6 @@ const jamsRoutes = require("./routes/jams");
 
 require("./passport/auth/facebook");
 
-// Initialize db connection
-const connection = mongoConnect();
-connection
-  .on("error", console.log)
-  .on("disconnected", mongoConnect)
-  .once("open", async () => {
-    const PORT = process.env.PORT || "3000";
-    app.listen(PORT, console.log(`Server started on port ${PORT}`));
-  });
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
@@ -57,3 +46,5 @@ app.use("/jams", jamsRoutes);
 app.get("/", async (req, res) => {
   return res.status(200).send("Hello!");
 });
+
+module.exports = app;
