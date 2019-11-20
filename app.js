@@ -4,7 +4,6 @@ const passport = require("passport");
 const helmet = require("helmet");
 const cors = require("cors");
 const config = require("config")[process.env.NODE_ENV || "development"];
-let { mongoConnect } = require("./models");
 
 const whitelist = [
   "https://localhost:3001",
@@ -29,7 +28,7 @@ const corsOptions = {
 //==================================//
 // Disable cors when running tests //
 //==================================//
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 const usersRoutes = require("./routes/users");
 const jamsRoutes = require("./routes/jams");

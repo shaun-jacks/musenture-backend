@@ -1,8 +1,6 @@
 const User = require("../../../../../models/users");
 const request = require("supertest");
-const cors = require("cors");
 let { mongoDisconnect, initDatabase } = require("../../../../../models");
-const PORT = require("config")[process.env.NODE_ENV || "test"].get("port");
 
 const ROUTE = "/users/auth/local";
 
@@ -51,7 +49,7 @@ describe(`${ROUTE}`, () => {
       password2: "Testing123!"
     };
     let res = await request(server)
-      .post(`${ROUTE}`)
+      .post(`/users/auth/register`)
       .send(reqBody);
 
     reqBody = {
