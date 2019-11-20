@@ -28,7 +28,7 @@ const corsOptions = {
 //==================================//
 // Disable cors when running tests //
 //==================================//
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 const usersRoutes = require("./routes/users");
 const jamsRoutes = require("./routes/jams");

@@ -53,7 +53,7 @@ describe(`${ROUTE}`, () => {
     expect(res.status).toBe(200);
   });
 
-  it("PUT /me should return 200 if request has authorization and with updated user", async () => {
+  it("PUT / should return 200 if request has authorization and with updated user", async () => {
     const url = `${ROUTE}/`;
 
     // log existing user in
